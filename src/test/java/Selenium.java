@@ -4,16 +4,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Random;
 
 public class Selenium {
     //cria instancia do drive chrome
-    private WebDriver driver = new ChromeDriver();
+    private static WebDriver driver = new ChromeDriver();
+    private WebDriverWait wait = new WebDriverWait(driver, 100);
 
     @BeforeAll
-    public void setup(){
+    public static void setup(){
         //setar as propriedade do chrome drive
         System.setProperty( "webdriver.chrome.driver" , "./src/main/resources/chromedriver.exe");
 
@@ -30,7 +35,7 @@ public class Selenium {
     }
 
     @Test //anotação do jUnit jupiter que vai me ajudar a rodar o teste (Dar o play)
-    public void criarUsuario(){
+    public  void criarUsuario(){
 
       Random random = new Random();
     //Cria varios emails diferentes
@@ -64,8 +69,11 @@ public class Selenium {
 
     @Test
     public void radioCheckBox(){
-        driver.findElement(By.xpath("//a[text()='Busca de elementos']")).click();
-        driver.findElement(By.xpath("//a[text()='Radio e Checkbox']")).click();
+       driver.findElement(By.xpath("//a[text()='Busca de elementos']")).click();
+
+        WebElement link = driver.findElement(By.xpath("//a[text()='Radio e Checkbox']"));
+        wait.until(ExpectedConditions.visibilityOf(link));
+
         driver.findElement(By.xpath("//input[@id='red']")).click();
         driver.findElement(By.xpath("//input[@id='blue']")).click();
         driver.findElement(By.xpath("//input[@id='yellow']")).click();
@@ -80,7 +88,7 @@ public class Selenium {
     }
 
     @AfterAll
-    public void fecharBrowser(){
+    public static void fecharBrowser(){
 
         //Fechar meu Browser
         driver.quit();
